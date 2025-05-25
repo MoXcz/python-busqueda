@@ -16,10 +16,10 @@ La idea es que en este problema el costo del estado $q$ denotado como $g(q)$ se 
 
 ## Ejecución
 
-Es necesario tener [instalado Python](https://www.python.org/downloads/), o [Docker](https://docs.docker.com/engine/install/) para ejecutar el proyecto desde un contenedor.
+Es necesario tener [instalado Python](https://www.python.org/downloads/) para ejecutar de manera local, o [Docker](https://docs.docker.com/engine/install/) para ejecutar el proyecto desde un contenedor.
 
 ```bash
-git clone
+git clone https://github.com/MoXcz/python-busqueda
 cd python-busqueda
 
 # Docker
