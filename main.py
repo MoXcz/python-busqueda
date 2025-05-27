@@ -23,10 +23,23 @@ graph = {
     "H": ["E", "F"],
 }
 
+def uniform_cost_search(start, goal):
+    frontier = [(0, start, [start])]
+    best_g = {start: 0}
 
-def best_first_search(start, goal):
-    """Búsqueda preferente por lo mejor (Best-First Search usando sólo heurística h)."""
-    # Frontier: (h, g, nodo, camino)
+    while frontier:
+        g, u, path = heapq.heappop(frontier)
+        if u == goal:
+            return path, g
+        for v in graph[u]:
+            g2 = g + dlr[u][v]
+            if g2 < best_g.get(v, float("inf")):
+                best_g[v] = g2
+                heapq.heappush(frontier, (g2, v, path + [v]))
+    return None, float("inf")
+
+
+def greedy_search(start, goal):
     frontier = [(dlr[start][goal], 0, start, [start])]
     visited = set()
 
@@ -44,32 +57,22 @@ def best_first_search(start, goal):
                 g2 = g + dlr[u][v]
                 h2 = dlr[v][goal]
                 heapq.heappush(frontier, (h2, g2, v, path + [v]))
-    return None
+    return None, float("inf")
 
-
-def greedy_search(start, goal):
-    frontier = [(0, start, [start])]  # (g, nodo, camino)
-    best_g = {start: 0}
-
-    while frontier:
-        g, u, path = heapq.heappop(frontier)
-        if u == goal:
-            return path, g
-
-        for v in graph[u]:
-            g2 = g + dlr[u][v]
-            if g2 < best_g.get(v, float("inf")):
-                best_g[v] = g2
-                heapq.heappush(frontier, (g2, v, path + [v]))
-    return None
 
 
 def astar_search(start, goal):
     frontier = [(dlr[start][goal], 0, start, [start])]  # (f, g, nodo, camino)
     best_g = {start: 0}
+    closed = set()
 
     while frontier:
         _, g, u, path = heapq.heappop(frontier)
+
+        if u in closed:
+            continue
+        closed.add(u)
+
         if u == goal:
             return path, g
 
@@ -79,7 +82,7 @@ def astar_search(start, goal):
                 best_g[v] = g2
                 f2 = g2 + dlr[v][goal]
                 heapq.heappush(frontier, (f2, g2, v, path + [v]))
-    return None
+    return None, float("inf")
 
 
 if __name__ == "__main__":
@@ -88,6 +91,18 @@ if __name__ == "__main__":
     start = input("Estado inicial: ").strip().upper()
     goal = input("Estado meta: ").strip().upper()
 
-    print("\nPreferente por lo mejor:", best_first_search(start, goal))
-    print("\nBúsqueda avara:", greedy_search(start, goal))
-    print("\nA*:", astar_search(start, goal))
+    if start not in graph or goal not in graph:
+        print("Estado(s) desconocido(s). Intenta de nuevo.")
+        exit(1)
+
+    path, cost = uniform_cost_search(start, goal)
+    print(f"\nPreferente por lo mejor → costo {cost:.1f}, {len(path)-1} pasos:")
+    print("  " + " → ".join(path))
+
+    path, cost = greedy_search(start, goal)
+    print(f"\nBúsqueda avara         → costo {cost:.1f}, {len(path)-1} pasos:")
+    print("  " + " → ".join(path))
+
+    path, cost = astar_search(start, goal)
+    print(f"\nA*                     → costo {cost:.1f}, {len(path)-1} pasos:")
+    print("  " + " → ".join(path))
