@@ -32,6 +32,6 @@ python3 main.py
 
 ## Integrantes
 
-- Martin Eduardo Chacon Orduño [Chacon0755](https://github.com/Chacon0755).
+- Martin Eduardo Chacon Orduño [Chacon0754](https://github.com/Chacon0754).
 - Oscar Joaquin Marquez Ortega [Oscar27-22](https://github.com/Oscar27-22).
 - ...
